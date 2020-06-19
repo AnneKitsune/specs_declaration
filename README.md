@@ -20,6 +20,8 @@ specs_declaration = "*"
 
 
 ```rust
+use specs::*;
+
 system!(SystemName, |velocity: WriteStorage<'a, Velocity>| {
     for vel in (&velocity,).join() {
         println!("velocity: {}, {}, {}", vel.x, vel.y, vel.z);
@@ -30,6 +32,8 @@ system!(SystemName, |velocity: WriteStorage<'a, Velocity>| {
 With generics:
 
 ```rust
+use specs::*;
+
 system!(SystemName<T: Debug + Send + Sync + 'static>, |my_resource: Read<'a, T>, velocity: WriteStorage<'a, Velocity>| {
     println!("My Generic Resource: {:?}", my_resource);
 
