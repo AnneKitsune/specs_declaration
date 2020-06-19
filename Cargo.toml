@@ -12,4 +12,4 @@ license = "GPL-3.0-only"
 exclude = ["doc"]
 
 [dev-dependencies]
-specs = "*"
+specs = "0.16.1"
