@@ -1,3 +1,5 @@
+#![allow(unused_mut)]
+
 #[macro_export]
 macro_rules! system {
     ($name:ident, |$( $v:ident : $t:ty ),*| $r:block) => {
@@ -8,7 +10,7 @@ macro_rules! system {
             type SystemData = ($(
                 $t,
             )*);
-            fn run(&mut self, ($($v,)*): Self::SystemData) {
+            fn run(&mut self, ($(mut $v,)*): Self::SystemData) {
                 $r
             }
         }
@@ -25,7 +27,7 @@ macro_rules! system {
             type SystemData = ($(
                 $t,
             )*);
-            fn run(&mut self, ($($v,)*): Self::SystemData) {
+            fn run(&mut self, ($(mut $v,)*): Self::SystemData) {
                 $r
             }
         }
