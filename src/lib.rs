@@ -53,24 +53,29 @@ mod tests {
 
     #[test]
     fn it_works() {
-        system!(SystemName, |test: Read<'a, Test>, _test2: Write<'a, Test>| {
-            println!("{}", test.a);
-        });
+        system!(
+            SystemName,
+            |test: Read<'a, Test>, _test2: Write<'a, Test>| {
+                println!("{}", test.a);
+            }
+        );
     }
 
     #[test]
     fn it_works2() {
-        system!(SystemName<T: Send + Sync + 'static + Default, A>, |_test: Read<'a, T>| {
-        });
+        system!(
+            SystemName<T: Send + Sync + 'static + Default, A>,
+            |_test: Read<'a, T>| {}
+        );
     }
 
     #[test]
     fn default_test() {
-        enum E {
-        }
-        system!(SystemName<T: Send + Sync + 'static>, |_test: ReadExpect<'a, T>| {
-
-        });
+        enum E {}
+        system!(SystemName<T: Send + Sync + 'static>, |_test: ReadExpect<
+            'a,
+            T,
+        >| {});
         let _sys = SystemName::<E>::default();
     }
 }
