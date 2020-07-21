@@ -1,4 +1,4 @@
-#![allow(unused_mut)]
+#![allow(unused_mut, unused_parens)]
 
 #[macro_export]
 macro_rules! system {
@@ -18,7 +18,7 @@ macro_rules! system {
     ($name:ident <
                    $( $generic:tt $( : $clt:tt $(+ $dlt:tt )* )? ),+
                    >, |$( $v:ident : $t:ty ),*| $r:block) => {
-        #[derive(Default, Clone, Copy)]
+        #[derive(Clone, Copy)]
         pub struct $name < $( $generic ),+ > {
             _phantom: std::marker::PhantomData<($( $generic ),+)>,
         }
@@ -29,6 +29,14 @@ macro_rules! system {
             )*);
             fn run(&mut self, ($(mut $v,)*): Self::SystemData) {
                 $r
+            }
+        }
+
+        impl<$( $generic ),+> Default for $name < $( $generic ),+ >{
+            fn default() -> Self {
+                Self {
+                    _phantom: std::marker::PhantomData,
+                }
             }
         }
     };
@@ -54,5 +62,15 @@ mod tests {
     fn it_works2() {
         system!(SystemName<T: Send + Sync + 'static + Default, A>, |_test: Read<'a, T>| {
         });
+    }
+
+    #[test]
+    fn default_test() {
+        enum E {
+        }
+        system!(SystemName<T: Send + Sync + 'static>, |_test: ReadExpect<'a, T>| {
+
+        });
+        let _sys = SystemName::<E>::default();
     }
 }
